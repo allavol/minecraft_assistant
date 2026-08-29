@@ -785,13 +785,61 @@ function formatRecipeFromMinecraftJson(recipeId, recipe) {
     };
 }
 
+let cooldownTimerInterval = null;
+
+function checkAiRateLimit() {
+    const MAX_REQUESTS = 15;
+    const TIME_WINDOW_MS = 60 * 1000;
+    const now = Date.now();
+    let history = JSON.parse(localStorage.getItem('aiQueryHistory') || '[]');
+    
+    history = history.filter(time => now - time < TIME_WINDOW_MS);
+    
+    if (history.length >= MAX_REQUESTS) {
+        const oldestTime = history[0];
+        const timeLeft = Math.ceil((TIME_WINDOW_MS - (now - oldestTime)) / 1000);
+        return { allowed: false, timeLeft };
+    }
+    
+    history.push(now);
+    localStorage.setItem('aiQueryHistory', JSON.stringify(history));
+    return { allowed: true };
+}
+
+function startCooldownTimer(timeLeft) {
+    const aiStatus = document.getElementById('ai-status');
+    if (cooldownTimerInterval) clearInterval(cooldownTimerInterval);
+    
+    let currentLeft = timeLeft;
+    aiStatus.style.color = '#ff6b6b';
+    aiStatus.textContent = `🤖 העוזר נח... חוזר בעוד ${currentLeft} שניות ⏳`;
+    
+    cooldownTimerInterval = setInterval(() => {
+        currentLeft--;
+        if (currentLeft <= 0) {
+            clearInterval(cooldownTimerInterval);
+            cooldownTimerInterval = null;
+            aiStatus.style.color = '';
+            aiStatus.textContent = '⚡ מנוע חיפוש חכם פעיל';
+        } else {
+            aiStatus.textContent = `🤖 העוזר נח... חוזר בעוד ${currentLeft} שניות ⏳`;
+        }
+    }, 1000);
+}
+
 // Ask AI / NLP Engine
 async function handleAiQuery(query) {
+    if (!query || query.trim() === '') return;
+    
+    const rateLimit = checkAiRateLimit();
+    if (!rateLimit.allowed) {
+        startCooldownTimer(rateLimit.timeLeft);
+        return;
+    }
+
     const aiResponseBox = document.getElementById('ai-response-box');
     const aiResponseContent = document.getElementById('ai-response-content');
     const aiStatus = document.getElementById('ai-status');
-
-    if (!query || query.trim() === '') return;
 
     aiResponseBox.classList.remove('hidden');
     aiResponseBox.classList.remove('collapsed');
