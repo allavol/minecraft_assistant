@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מיינקראפט: המדריך שלי</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="mc-container">
+        <header class="mc-header">
+            <h1>המדריך למיינקראפט ⛏️</h1>
+            
+            <!-- Smart Search & AI Crafting Assistant -->
+            <div class="search-section">
+                <div class="search-bar-container">
+                    <button id="home-btn" class="btn btn-home" title="חזרה לדף הבית והצגת כל הפריטים">🏠 דף הבית</button>
+                    <input type="text" id="search-input" class="mc-input" placeholder="🔍 חפש פריט, תיאור, או שאל שאלה (למשל: הדבר הזה שמבשל אוכל)...">
+                    <button id="ai-btn" class="btn btn-ai" title="הפעל עוזר AI חכם">🤖 שאל את ה-AI</button>
+                    <button id="clear-search-btn" class="btn btn-clear hidden" title="נקה חיפוש">✖</button>
+                </div>
+                <div id="ai-status" class="ai-status">⚡ מנוע חיפוש חכם פעיל (תמיכה במודל מקומי / Ivrit AI)</div>
+                <div id="ai-response-box" class="ai-response-box hidden">
+                    <div class="ai-response-header" id="ai-header-toggle" style="cursor: pointer;" title="לחץ כדי לצמצם או להרחיב">
+                        <span class="ai-badge">🤖 עוזר המיינקראפט האישי שלך</span>
+                        <button id="toggle-ai-box" class="btn-toggle-ai" title="צמצם / הרחב">▲</button>
+                    </div>
+                    <div id="ai-response-content" class="ai-response-content"></div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="category-filters" id="category-filters">
+                    <button class="btn cat-btn active" data-cat="building">🧱 בלוקי בנייה</button>
+                    <button class="btn cat-btn" data-cat="nature">🌱 טבע וחקלאות</button>
+                    <button class="btn cat-btn" data-cat="tools">⛏️ כלי עבודה</button>
+                    <button class="btn cat-btn" data-cat="weapons">⚔️ קרב ונשק</button>
+                    <button class="btn cat-btn" data-cat="food">🍎 אוכל</button>
+                    <button class="btn cat-btn" data-cat="books">📚 ספרים וקסמים</button>
+                    <button class="btn cat-btn" data-cat="all">הכל</button>
+                </div>
+            </div>
+        </header>
+
+        <main id="main-content" class="view-chest">
+            <!-- Items will be injected here via JavaScript -->
+        </main>
+    </div>
+
+    <!-- Minecraft Tooltip (Chest View) -->
+    <div id="mc-tooltip" class="mc-tooltip hidden">
+        <div class="mc-tooltip-title-en" id="tt-en">Diamond Sword</div>
+        <div class="mc-tooltip-title-he" id="tt-he">חרב יהלום</div>
+        <div class="mc-tooltip-desc" id="tt-desc">עושה המון נזק למפלצות!</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

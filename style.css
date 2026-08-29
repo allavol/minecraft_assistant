@@ -1,0 +1,531 @@
+:root {
+    --mc-bg: #c6c6c6;
+    --mc-border-light: #ffffff;
+    --mc-border-dark: #555555;
+    --mc-dark-bg: #8b8b8b;
+    --mc-tooltip-bg: rgba(16, 0, 16, 0.95);
+    --mc-tooltip-border: rgba(38, 0, 92, 0.95);
+    --text-color: #333;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Varela Round', sans-serif;
+    background-color: #2b2b2b;
+    background-image: url('https://minecraft.wiki/images/Dirt_JE2_BE2.png');
+    background-size: 64px;
+    background-attachment: fixed;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Main Container (looks like a chest/inventory window) */
+.mc-container {
+    background-color: var(--mc-bg);
+    border: 4px solid;
+    border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
+    border-radius: 2px;
+}
+
+.mc-header h1 {
+    text-align: center;
+    color: #404040;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0px #fff;
+}
+
+/* Search & AI Assistant */
+.search-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.search-bar-container {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    max-width: 650px;
+    position: relative;
+}
+
+.mc-input {
+    flex: 1;
+    background-color: var(--mc-dark-bg);
+    color: #fff;
+    font-family: inherit;
+    font-size: 1.1rem;
+    padding: 12px 18px;
+    border: 3px solid;
+    border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
+    outline: none;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+.mc-input::placeholder {
+    color: #aaa;
+}
+
+.btn-home {
+    background-color: #3b6b8b;
+    color: #fff;
+    white-space: nowrap;
+    border-color: #5591be #203f56 #203f56 #5591be;
+    font-weight: bold;
+}
+
+.btn-home:hover {
+    background-color: #4b85ad;
+}
+
+.btn-ai {
+    background-color: #5b8731;
+    color: #fff;
+    white-space: nowrap;
+    border-color: #79ab44 #3a5c1a #3a5c1a #79ab44;
+}
+
+.btn-ai:hover {
+    background-color: #6da33a;
+}
+
+.btn-clear {
+    padding: 10px 14px;
+    background-color: #8b3c3c;
+    color: #fff;
+    border-color: #b55454 #5c2424 #5c2424 #b55454;
+}
+
+.ai-status {
+    font-size: 0.85rem;
+    color: #555;
+    text-shadow: 1px 1px 0px #fff;
+}
+
+.ai-response-box {
+    width: 100%;
+    max-width: 650px;
+    background: #2b2b2b;
+    color: #f1f1f1;
+    border: 3px solid;
+    border-color: #555 #111 #111 #555;
+    padding: 15px 20px;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.4);
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-response-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #444;
+    padding-bottom: 6px;
+}
+
+.ai-badge {
+    font-weight: bold;
+    color: #9bd39b;
+    font-size: 1rem;
+}
+
+.btn-toggle-ai {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid #555;
+    color: #9bd39b;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-toggle-ai:hover {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+}
+
+.ai-response-box.collapsed .ai-response-content {
+    display: none;
+}
+
+.ai-response-box.collapsed .ai-response-header {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.ai-response-content {
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.ai-response-content strong {
+    color: #ffd700;
+}
+
+.ai-step {
+    background: rgba(255,255,255,0.07);
+    padding: 8px 14px;
+    margin: 6px 0;
+    border-right: 4px solid #5b8731;
+    border-radius: 2px;
+}
+
+/* Rich Crafting Card & 3x3 Grid */
+.crafting-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #1e1e1e;
+    padding: 18px;
+    border: 2px solid #555;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+.crafting-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #9bd39b;
+    border-bottom: 1px solid #444;
+    padding-bottom: 6px;
+}
+
+.crafting-summary {
+    font-size: 1.05rem;
+    color: #e0e0e0;
+}
+
+.ingredients-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.ingredient-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #2d2d2d;
+    border: 2px solid #666;
+    padding: 6px 12px;
+    font-size: 0.95rem;
+    color: #fff;
+}
+
+.ingredient-pill img {
+    width: 24px;
+    height: 24px;
+    image-rendering: pixelated;
+}
+
+/* 3x3 Table Layout */
+.crafting-bench-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: #2a2a2a;
+    padding: 16px;
+    border: 3px solid;
+    border-color: #555 #111 #111 #555;
+    margin: 10px 0;
+}
+
+.grid-3x3 {
+    display: grid;
+    grid-template-columns: repeat(3, 48px);
+    grid-template-rows: repeat(3, 48px);
+    gap: 4px;
+    background: #8f8f8f;
+    padding: 6px;
+    border: 3px solid;
+    border-color: #373737 #fff #fff #373737;
+}
+
+.grid-cell {
+    width: 48px;
+    height: 48px;
+    background: #8b8b8b;
+    border: 2px solid;
+    border-color: #373737 #fff #fff #373737;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.grid-cell img {
+    width: 36px;
+    height: 36px;
+    image-rendering: pixelated;
+}
+
+.crafting-arrow {
+    font-size: 2rem;
+    color: #9bd39b;
+    font-weight: bold;
+}
+
+.result-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.result-slot {
+    width: 64px;
+    height: 64px;
+    background: #8b8b8b;
+    border: 3px solid;
+    border-color: #373737 #fff #fff #373737;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result-slot img {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+}
+
+.subcraft-guide {
+    background: rgba(0,0,0,0.3);
+    padding: 12px;
+    border-right: 4px solid #d4af37;
+    font-size: 0.95rem;
+    color: #ddd;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.view-toggle, .category-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn {
+    background-color: var(--mc-bg);
+    border: 3px solid;
+    border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
+    padding: 10px 20px;
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #404040;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.btn:active {
+    border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
+    transform: translateY(2px);
+}
+
+.btn.active {
+    background-color: #9bd39b;
+}
+
+/* CHEST VIEW */
+.view-chest {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: var(--mc-bg);
+    padding: 20px;
+}
+
+.category-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2b2b2b;
+    background: #c6c6c6;
+    padding: 6px 14px;
+    border: 2px solid;
+    border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+}
+
+.section-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 8px;
+}
+
+.chest-slot {
+    width: 64px;
+    height: 64px;
+    background-color: var(--mc-dark-bg);
+    border: 3px solid;
+    border-color: var(--mc-border-dark) var(--mc-border-light) var(--mc-border-light) var(--mc-border-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.chest-slot img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    transition: transform 0.2s;
+    color: transparent;
+    display: block;
+}
+
+.chest-slot:hover img {
+    transform: scale(1.2);
+}
+
+/* CAROUSEL VIEW */
+.view-carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 20px 10px;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.carousel-item {
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background-color: var(--mc-bg);
+    border: 4px solid;
+    border-color: var(--mc-border-light) var(--mc-border-dark) var(--mc-border-dark) var(--mc-border-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 5px 5px 0px rgba(0,0,0,0.3);
+}
+
+.carousel-item img {
+    width: 128px;
+    height: 128px;
+    image-rendering: pixelated;
+    margin-bottom: 20px;
+    filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.3));
+}
+
+.carousel-item h2 {
+    color: #ffd700;
+    text-shadow: 2px 2px 0px #000;
+    margin-bottom: 5px;
+    font-size: 1.8rem;
+    background: #333;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+.carousel-item h3 {
+    color: #404040;
+    margin-bottom: 15px;
+}
+
+.carousel-item p {
+    font-size: 1.2rem;
+    line-height: 1.4;
+    background-color: rgba(255,255,255,0.5);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Custom Scrollbar for Carousel */
+.view-carousel::-webkit-scrollbar {
+    height: 12px;
+}
+.view-carousel::-webkit-scrollbar-track {
+    background: var(--mc-dark-bg);
+    border-radius: 6px;
+}
+.view-carousel::-webkit-scrollbar-thumb {
+    background: var(--mc-border-light);
+    border-radius: 6px;
+    border: 2px solid var(--mc-border-dark);
+}
+
+/* TOOLTIP (Minecraft Style) */
+.mc-tooltip {
+    position: absolute;
+    background-color: var(--mc-tooltip-bg);
+    border: 3px solid var(--mc-tooltip-border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    color: #AAAAAA;
+    font-family: 'Arial', sans-serif;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+    max-width: 250px;
+}
+
+.mc-tooltip.hidden {
+    display: none;
+}
+
+.mc-tooltip-title-en {
+    color: #55FF55; /* Minecraft Green for name */
+    font-weight: bold;
+    margin-bottom: 2px;
+    font-size: 1.1rem;
+}
+
+.mc-tooltip-title-he {
+    color: #FFFF55; /* Minecraft Yellow */
+    margin-bottom: 8px;
+}
+
+.mc-tooltip-desc {
+    color: #AAAAAA;
+    font-size: 0.9rem;
+    line-height: 1.3;
+}
