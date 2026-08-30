@@ -29,7 +29,31 @@ function playSound(type, cat = '') {
     } catch(e) {}
 }
 
+const rarityMap = new Map(); // Maps item string ID to numeric rarity ID
+
 let inventoryData = [
+    // === 20 פריטים חדשים שנוספו ===
+    { id: 'sandstone', cat: 'building', en: 'Sandstone', he: 'אבן חול', desc: 'אבן צהובה יפהפייה שנוצרת כשחול נדחס יחד! מושלמת לבניית פירמידות! 🏜️', img: 'images/sandstone.png', obtain: 'יוצרים מ-4 בלוקי חול בשולחן העבודה' },
+    { id: 'white_wool', cat: 'building', en: 'White Wool', he: 'צמר לבן', desc: 'צמר רך ונעים של כבשים! אפשר לצבוע אותו בכל צבע שרוצים! 🐑', img: 'images/white_wool.png', obtain: 'גוזמים כבשים עם מספריים' },
+    { id: 'furnace', cat: 'building', en: 'Furnace', he: 'תנור', desc: 'תנור שמחמם, מבשל ומתיך! בלי תנור אי אפשר לחיות בעולם של מיינקראפט! 🔥', img: 'images/furnace_front.png', obtain: 'יוצרים מ-8 אבנים מרוצפות בשולחן העבודה' },
+    { id: 'ladder', cat: 'building', en: 'Ladder', he: 'סולם', desc: 'סולם עץ לטיפוס על קירות גבוהים! מעולה לבניית מגדלים! 🪜', img: 'images/ladder.png', obtain: 'יוצרים מ-7 מקלות בשולחן העבודה' },
+    { id: 'oak_fence', cat: 'building', en: 'Oak Fence', he: 'גדר אלון', desc: 'גדר עץ מגניבה שמונעת מהחיות לברוח מהחווה שלך! 🐄🚧', img: 'https://minecraft.wiki/images/Oak_Fence_JE5_BE1.png', obtain: 'יוצרים מקרשים ומקלות בשולחן העבודה' },
+    { id: 'sponge', cat: 'building', en: 'Sponge', he: 'ספוג', desc: 'ספוג ים ענקי שסופג מים! אחד מהפריטים הנדירים ביותר במשחק! 🧽', img: 'https://minecraft.wiki/images/Sponge_JE2_BE2.png', obtain: 'מביסים שומרי גרדיאן בתחתית הים' },
+    { id: 'snow_block', cat: 'building', en: 'Snow Block', he: 'בלוק שלג', desc: 'בלוק שלג לבן שמושלם לבניית איש שלג! בונים גולם שלג עם שני בלוקים ודלעת! ⛄', img: 'https://minecraft.wiki/images/Snow_JE4_BE3.png', obtain: 'יוצרים מ-4 כדורי שלג בשולחן העבודה' },
+    { id: 'ice', cat: 'building', en: 'Ice', he: 'קרח', desc: 'משטח חלקלק שגורם לכם להחליק! בונים ממנו גלשנים למהירות שיא! 🧊', img: 'images/ice.png', obtain: 'חוצבים בשטחים קפואים עם קסם Silk Touch' },
+    { id: 'glowstone', cat: 'building', en: 'Glowstone', he: 'גלוסטון (אבן זוהרת)', desc: 'אבן שמאירה ברק מסנוור מהנת\'ר! חזקה יותר מכל לפיד! ✨', img: 'images/glowstone.png', obtain: 'חוצבים בנת\'ר' },
+    { id: 'soul_sand', cat: 'building', en: 'Soul Sand', he: 'חול נשמות', desc: 'חול כהה ומפחיד מהנת\'ר שמאט כל מי שהולך עליו! שמים ווית\'ר עליו לגדל! 💀', img: 'https://minecraft.wiki/images/Soul_Sand_JE4_BE2.png', obtain: 'מוצאים בנת\'ר' },
+    { id: 'stone_bricks', cat: 'building', en: 'Stone Bricks', he: 'לבני אבן', desc: 'לבנים אפורות חזקות! מושלמות לבניית מבצרים, מגדלים וטירות! 🏰', img: 'images/stone_bricks.png', obtain: 'יוצרים מ-4 אבנים מלוטשות בשולחן העבודה' },
+    { id: 'melon', cat: 'nature', en: 'Melon', he: 'מלון', desc: 'פרי ירוק ומרענן שצומח בג\'ונגל! קוצצים לפרוסות מתוקות! 🍈', img: 'https://minecraft.wiki/images/Melon_JE2_BE2.png', obtain: 'גדל מזרעי מלון בחווה' },
+    { id: 'carved_pumpkin', cat: 'building', en: 'Carved Pumpkin', he: 'דלעת מגולפת', desc: 'דלעת עם פרצוף מפחיד! אפשר לשים על הראש כמו קסדה מצחיקה! 🎃', img: 'images/carved_pumpkin.png', obtain: 'משתמשים במספריים על דלעת' },
+    { id: 'jack_o_lantern', cat: 'building', en: 'Jack o Lantern', he: 'פנס הדלעת', desc: 'דלעת מגולפת עם נר בפנים שמאירה! מפחידה ומגניבה! 🎃🕯️', img: 'images/jack_o_lantern.png', obtain: 'שמים לפיד בתוך דלעת מגולפת' },
+    { id: 'ender_chest', cat: 'building', en: 'Ender Chest', he: 'תיבת אנדר', desc: 'ארגז קסום! כל מה שמשים בו - נמצא בכל תיבת אנדר בכל מקום בעולם! 🟣✨', img: 'https://minecraft.wiki/images/Ender_Chest_JE2_BE4.png', obtain: 'יוצרים מאובסידיאן ועין אנדר' },
+    { id: 'brown_mushroom', cat: 'nature', en: 'Brown Mushroom', he: 'פטריה חומה', desc: 'פטריה גדולה ועגולה שגדלה במקומות חשוכים! מבשלים ממנה מרק חמים! 🍄', img: 'images/brown_mushroom.png', obtain: 'מוצאים במקומות חשוכים ובנת\'ר' },
+    { id: 'emerald_block', cat: 'building', en: 'Block of Emerald', he: 'בלוק אזמרגד', desc: 'בלוק ירוק מנצנץ עשוי מ-9 אזמרגדים! הכי יקר ויוקרתי שיש! 💚💎', img: 'images/emerald_block.png', obtain: 'יוצרים מ-9 אזמרגדים בשולחן העבודה' },
+    { id: 'lapis_block', cat: 'building', en: 'Block of Lapis Lazuli', he: 'בלוק לאפיס', desc: 'בלוק כחול כהה ועשיר! עשוי מ-9 אבני לאפיס קסומות! 💙🔮', img: 'images/lapis_block.png', obtain: 'יוצרים מ-9 אבני לאפיס בשולחן העבודה' },
+    { id: 'end_portal_frame', cat: 'building', en: 'End Portal Frame', he: 'מסגרת השער לאנד', desc: 'אבן עתיקה וקסומה שמרכיבה את השער לעולם הסופי שבו גר הדרקון! 🟢🐲', img: 'images/end_portal_frame_side.png', obtain: 'נמצאת רק במבצר תת-קרקעי' },
+    { id: 'dragon_egg', cat: 'nature', en: 'Dragon Egg', he: 'ביצת הדרקון', desc: 'הפרס הנדיר ביותר! ביצה שחורה שמופיעה פעם אחת בחיים כשמביסים את הדרקון! 🐉🥚', img: 'images/dragon_egg.png', obtain: 'נופלת כשמנצחים את הדרקון לראשונה' },
+    // === סוף 20 הפריטים החדשים ===
     { id: 'warden_spawn_egg', cat: 'nature', en: 'Warden Spawn Egg', he: 'ביצת השרצת וורדן', desc: 'מפלצת עיוורת ענקית ומפחידה ששומעת כל צעד שלכם! ששש... 🤫', img: 'images/warden_spawn_egg.png', obtain: 'מוצאים בטבע או מגדלים בעזרת זרעים וחקלאות' },
     { id: 'allay_spawn_egg', cat: 'nature', en: 'Allay Spawn Egg', he: 'ביצת השרצת אליי', desc: 'פיה מתוקה וכחולה שאוהבת מוזיקה ותאסוף עבורכם חפצים! 🧚‍♂️', img: 'images/allay_spawn_egg.png', obtain: 'מוצאים בטבע או מגדלים בעזרת זרעים וחקלאות' },
     { id: 'frog_spawn_egg', cat: 'nature', en: 'Frog Spawn Egg', he: 'ביצת השרצת צפרדע', desc: 'צפרדע חמודה שקופצת גבוה ואוהבת לאכול רפש! 🐸', img: 'images/frog_spawn_egg.png', obtain: 'מוצאים בטבע או מגדלים בעזרת זרעים וחקלאות' },
@@ -339,7 +363,8 @@ const categoryMeta = {
     'tools': { title: '⛏️ כלי עבודה ושירות (Tools & Utilities)' },
     'weapons': { title: '⚔️ קרב ונשק (Combat & Weapons)' },
     'food': { title: '🍎 אוכל ושתייה (Food & Drinks)' },
-    'books': { title: '📚 ספרים וקסמים (Books & Magic)' }
+    'books': { title: '📚 ספרים וקסמים (Books & Magic)' },
+    'all': { title: '🚀 כל שאר פריטי המשחק (מצב מתקדם)' }
 };
 
 const categoryOrder = ['building', 'nature', 'tools', 'weapons', 'food', 'books'];
@@ -583,6 +608,78 @@ function matchSearchTerms(queryStr, itemText) {
     });
 }
 
+// ===== POPULARITY ORDER =====
+// Defines the display order for items within each category (most popular first)
+const categoryPopularityOrder = {
+    building: [
+        'dirt','stone','oak_planks','oak_log','cobblestone','glass','bricks',
+        'sand','gravel','obsidian','crafting_table','torch','redstone','tnt',
+        'iron_block','gold_block','diamond_block','netherite_block','coal_block',
+        'copper_block','cut_copper','exposed_copper','weathered_copper','oxidized_copper',
+        'spruce_planks','birch_planks','jungle_planks','acacia_planks','cherry_planks',
+        'dark_oak_planks','mangrove_planks','bamboo_planks','crimson_planks','warped_planks',
+        'spruce_log','birch_log','jungle_log','acacia_log','cherry_log',
+        'dark_oak_log','mangrove_log','crimson_stem','warped_stem',
+        'coal_ore','iron_ore','copper_ore','gold_ore','diamond_ore',
+        'emerald_ore','lapis_ore','redstone_ore',
+        'deepslate','cobbled_deepslate',
+        'deepslate_coal_ore','deepslate_iron_ore','deepslate_copper_ore',
+        'deepslate_gold_ore','deepslate_diamond_ore','deepslate_emerald_ore',
+        'deepslate_lapis_ore','deepslate_redstone_ore',
+        'granite','diorite','andesite','calcite','tuff',
+        'polished_granite','polished_diorite','polished_andesite','polished_deepslate',
+        'netherrack','nether_gold_ore','nether_quartz_ore','crimson_nylium','warped_nylium',
+        'grass_block','mud','coarse_dirt','rooted_dirt','podzol','red_sand',
+        'amethyst_block','budding_amethyst','dripstone_block','bamboo_block','bamboo_mosaic',
+        'hopper','piston','sticky_piston','dispenser','lever',
+        'minecart','rail','powered_rail','redstone_torch','soul_torch',
+        'raw_iron_block','raw_copper_block','raw_gold_block','ancient_debris','bedrock',
+        'crafter',
+    ],
+    nature: [
+        'creeper_spawn_egg','wolf_spawn_egg','cat_spawn_egg',
+        'axolotl_spawn_egg','frog_spawn_egg','allay_spawn_egg','warden_spawn_egg',
+        'ender_pearl','elytra','nether_star',
+        'bone','bone_meal','string','gunpowder','leather','glow_ink_sac',
+        'echo_shard','disc_fragment_5',
+        'dandelion','poppy','cornflower','blue_orchid','allium','azure_bluet',
+        'red_tulip','oxeye_daisy','lily_of_the_valley','sunflower','rose_bush','peony',
+        'oak_leaves','spruce_leaves','birch_leaves','jungle_leaves',
+        'cherry_leaves','azalea_leaves','flowering_azalea_leaves',
+        'bamboo','cactus','lily_pad',
+    ],
+    tools: [
+        'diamond_pickaxe','iron_pickaxe','totem_of_undying','saddle',
+        'goat_horn','recovery_compass','music_disc_5','tadpole_bucket',
+    ],
+    weapons: [
+        'iron_sword','diamond_sword','iron_helmet','iron_chestplate','iron_boots',
+        'iron_leggings','diamond_helmet','diamond_sword','bow','crossbow_standby',
+        'diamond_chestplate','golden_sword','stone_sword',
+    ],
+    food: [
+        'apple','bread','cooked_beef','cooked_chicken','cooked_porkchop',
+        'cooked_cod','cooked_salmon','potato','baked_potato',
+        'carrot','golden_carrot','golden_apple','cookie','cake',
+        'melon_slice','pumpkin_pie','honey_bottle','sweet_berries','glow_berries',
+        'mushroom_stew','beetroot_soup','rabbit_stew',
+    ],
+    books: [
+        'enchanting_table','book','enchanted_book','knowledge_book',
+        'bookshelf','lectern','experience_bottle','name_tag',
+    ],
+};
+
+function sortByPopularity(items, category) {
+    const order = categoryPopularityOrder[category] || [];
+    const orderMap = new Map(order.map((id, idx) => [id, idx]));
+    return [...items].sort((a, b) => {
+        const ai = orderMap.has(a.id) ? orderMap.get(a.id) : 9999;
+        const bi = orderMap.has(b.id) ? orderMap.get(b.id) : 9999;
+        return ai - bi;
+    });
+}
+
 function renderItems() {
     if (!mainContent) return;
     mainContent.innerHTML = '';
@@ -618,13 +715,24 @@ function renderItems() {
     if (currentView === 'chest') {
         mainContent.className = 'view-chest';
         
-        const categoriesToRender = (currentCategory === 'all' && searchQuery.trim() === '')
-            ? categoryOrder 
-            : [...new Set(itemsToProcess.map(i => i.cat))];
+        const isShowingAll = currentCategory === 'all' && searchQuery.trim() === '';
+        let categoriesToRender;
+        if (!isShowingAll) {
+            // Search results or specific category: use all found cats dynamically
+            categoriesToRender = [...new Set(itemsToProcess.map(i => i.cat))];
+        } else if (isAdvancedMode) {
+            // Advanced mode: show normal categories first, then the 'all' bucket
+            categoriesToRender = [...categoryOrder, 'all'];
+        } else {
+            // Normal mode: only the defined categories
+            categoriesToRender = categoryOrder;
+        }
 
         categoriesToRender.forEach(catKey => {
-            const items = itemsToProcess.filter(item => item.cat === catKey);
+            let items = itemsToProcess.filter(item => item.cat === catKey);
             if (items.length === 0) return;
+            // Sort items by popularity within category
+            items = sortByPopularity(items, catKey);
 
             const section = document.createElement('div');
             section.className = 'category-section';
@@ -644,15 +752,27 @@ function renderItems() {
                 const img = document.createElement('img');
                 img.src = item.img;
                 img.alt = item.en;
-                img.onerror = () => {
-                    img.onerror = null;
-                    img.src = `https://api.minecraftitems.xyz/api/item/chest`;
+                img.onerror = function() {
+                    var apiUrl = 'https://api.minecraftitems.xyz/api/item/' + item.id;
+                    var finalUrl = 'https://api.minecraftitems.xyz/api/item/chest';
+                    if (this.src !== apiUrl && this.src !== finalUrl) {
+                        this.src = apiUrl;
+                    } else if (this.src !== finalUrl) {
+                        this.src = finalUrl;
+                    } else {
+                        this.onerror = null;
+                    }
                 };
 
                 slot.addEventListener('mouseenter', (e) => showTooltip(e, item));
                 slot.addEventListener('mousemove', (e) => moveTooltip(e));
                 slot.addEventListener('mouseleave', hideTooltip);
-                slot.addEventListener('click', () => playSound('pop', item.cat));
+                slot.addEventListener('click', () => {
+                    playSound('pop', item.cat);
+                    if (item.he || item.en) {
+                        handleAiQuery(item.he || item.en);
+                    }
+                });
 
                 slot.appendChild(img);
                 slotsContainer.appendChild(slot);
@@ -1165,8 +1285,10 @@ if (searchInput) {
 
     searchInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            // Search is already live on input. Just blur to close mobile keyboard.
             searchInput.blur();
+            if (searchInput.value.trim()) {
+                handleAiQuery(searchInput.value.trim());
+            }
         }
     });
 }
@@ -1174,14 +1296,28 @@ if (searchInput) {
 if (searchBtn) {
     searchBtn.addEventListener('click', () => {
         if (searchInput) {
-            searchInput.blur(); // Dismisses mobile keyboard to show the results
+            searchInput.blur();
+            if (searchInput.value.trim()) {
+                handleAiQuery(searchInput.value.trim());
+            }
         }
     });
 }
 
 if (aiBtn) {
     aiBtn.addEventListener('click', () => {
-        handleAiQuery(searchInput.value);
+        if (searchInput && searchInput.value.trim()) {
+            handleAiQuery(searchInput.value.trim());
+        } else {
+            handleAiQuery('חרב');
+        }
+    });
+}
+
+if (closeAiBox) {
+    closeAiBox.addEventListener('click', () => {
+        const box = document.getElementById('ai-response-box');
+        if (box) box.classList.add('hidden');
     });
 }
 
@@ -1190,6 +1326,8 @@ if (clearSearchBtn) {
         searchInput.value = '';
         searchQuery = '';
         clearSearchBtn.classList.add('hidden');
+        const box = document.getElementById('ai-response-box');
+        if (box) box.classList.add('hidden');
         renderItems();
     });
 }
@@ -1327,10 +1465,6 @@ async function loadAllItems() {
     }
 }
 
-// Update all inventory data to use the reliable image API dynamically
-inventoryData.forEach(item => {
-    item.img = `https://api.minecraftitems.xyz/api/item/${item.id}`;
-});
 
 // Initialize on load
 renderItems();
