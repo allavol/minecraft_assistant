@@ -627,8 +627,22 @@ body {
     /* Keep search elements on one row for mobile */
     .search-bar-container {
         flex-direction: row;
-        gap: 8px;
+        gap: 6px;
         align-items: center;
+        width: 100%;
+    }
+
+    .action-buttons-container {
+        width: 100%;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .btn-ai, .btn-pwa-install {
+        flex: 1 1 100%; /* Take full width on small screens for easy touch */
+        font-size: 0.95rem;
+        padding: 10px 8px;
+        min-width: 0;
     }
 
     .btn-home {
@@ -639,8 +653,9 @@ body {
 
     .mc-input {
         flex: 1;
-        width: auto;
-        font-size: 1rem;
+        width: 100%;
+        min-width: 0;
+        font-size: 0.95rem;
         padding: 10px;
     }
 
