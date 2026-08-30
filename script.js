@@ -1168,8 +1168,19 @@ function showTooltip(e, item) {
 }
 
 function moveTooltip(e) {
-    const x = e.pageX + 15;
-    const y = e.pageY + 15;
+    let x = e.pageX + 15;
+    let y = e.pageY + 15;
+    
+    const tooltipWidth = tooltip.offsetWidth || 250; // Fallback to max-width from CSS
+    
+    // If tooltip goes off the right edge of the screen, move it to the left of the cursor
+    if (x + tooltipWidth > window.innerWidth) {
+        x = e.pageX - tooltipWidth - 15;
+    }
+    
+    // Prevent it from going off the left edge as well (just in case)
+    if (x < 5) x = 5;
+
     tooltip.style.left = `${x}px`;
     tooltip.style.top = `${y}px`;
 }
