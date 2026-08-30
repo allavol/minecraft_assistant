@@ -529,3 +529,91 @@ body {
     font-size: 0.9rem;
     line-height: 1.3;
 }
+
+/* =========================================
+   Mobile Responsiveness (Smartphones)
+   ========================================= */
+@media (max-width: 768px) {
+    body {
+        padding: 5px;
+        background-size: 48px; /* Smaller dirt background pattern */
+    }
+
+    .mc-container {
+        padding: 12px;
+        border-width: 3px;
+    }
+
+    .mc-header h1 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+
+    /* Stack search elements vertically */
+    .search-bar-container {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    /* Remove nowrap so things can wrap if absolutely necessary, 
+       but primarily they will span full width now */
+    .btn-home, .btn-ai, .btn-clear {
+        white-space: normal;
+        width: 100%;
+        font-size: 1.1rem;
+        padding: 12px;
+    }
+
+    .mc-input {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    .ai-response-box {
+        padding: 10px;
+    }
+
+    /* Category filters adapt to grid/wrap better on mobile */
+    .category-filters {
+        gap: 8px;
+    }
+
+    .category-filters .btn {
+        flex: 1 1 calc(50% - 8px); /* 2 columns on mobile */
+        font-size: 0.95rem;
+        padding: 10px 5px;
+    }
+
+    .category-filters .btn[data-cat="all"] {
+        flex: 1 1 100%;
+    }
+
+    /* Adjust Chest Slots for mobile */
+    .section-slots {
+        grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
+        gap: 6px;
+    }
+
+    .chest-slot {
+        width: 54px;
+        height: 54px;
+        border-width: 2px;
+    }
+
+    .chest-slot img {
+        width: 38px;
+        height: 38px;
+    }
+
+    /* Crafting grid adjustments for mobile */
+    .crafting-bench-area {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .crafting-arrow {
+        transform: rotate(90deg); /* Point down instead of right */
+        margin: 5px 0;
+    }
+}
