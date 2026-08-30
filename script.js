@@ -373,6 +373,30 @@ const categoryOrder = ['building', 'nature', 'tools', 'weapons', 'food', 'books'
 // Built-in Kids Crafting Recipes Knowledge Base with 3x3 Grid & Sub-crafting
 const craftingRecipes = [
     {
+        keywords: ['מכוש יהלום', 'מכוש דיימונד', 'diamond pickaxe', 'diamond_pickaxe'],
+        title: '⛏️ איך מכינים מכוש יהלום (Diamond Pickaxe)?',
+        summary: 'כדי להכין מכוש יהלום חזק ועמיד, צריך <strong>3 יהלומים (Diamonds)</strong> ו-<strong>2 מקלות (Sticks)</strong>!',
+        ingredients: [
+            { name: 'יהלום (Diamond) x3', img: 'images/diamond.png' },
+            { name: 'מקל (Stick) x2', img: 'images/stick.png' }
+        ],
+        grid: [
+            ['images/diamond.png', 'images/diamond.png', 'images/diamond.png'],
+            [null, 'images/stick.png', null],
+            [null, 'images/stick.png', null]
+        ],
+        resultImg: 'images/diamond_pickaxe.png',
+        resultName: 'מכוש יהלום (Diamond Pickaxe)',
+        subcraft: [
+            '<strong>💎 יהלומים:</strong> חוצבים עפרות יהלום במעמקי האדמה בעזרת מכוש ברזל ומעלה.',
+            '<strong>🥢 מקלות:</strong> מכינים מ-2 קרשי עץ בשולחן העבודה.'
+        ],
+        instructions: [
+            '<strong>השורה העליונה:</strong> 3 יהלומים בשלוש המשבצות העליונות.',
+            '<strong>הטור המרכזי:</strong> מקל אחד באמצע ומקל אחד למטה!'
+        ]
+    },
+    {
         keywords: ['מקל', 'מקלות', 'stick', 'sticks'],
         title: '🥢 איך מכינים מקל (Stick)?',
         summary: 'כדי להכין <strong>4 מקלות (Sticks)</strong>, צריך <strong>2 קרשי עץ (Oak Planks)</strong>!',
@@ -903,6 +927,7 @@ function cleanItemId(rawId) {
 function findRecipeInFullDatabase(query) {
     if (!allMinecraftRecipes || Object.keys(allMinecraftRecipes).length === 0) return null;
     
+    let targetId = null;
     const q = query.toLowerCase().trim();
     
     // Smart Transliteration & Term Normalization (Supports: "דיימונד chestplate", "שריון יהלום", "צ'סטפלייט", etc.)
@@ -954,8 +979,9 @@ function findRecipeInFullDatabase(query) {
         'דגל': 'white_banner',
         'חרב יהלום': 'diamond_sword',
         'חרב': 'iron_sword',
-        'מכוש': 'iron_pickaxe',
         'מכוש יהלום': 'diamond_pickaxe',
+        'מכוש ברזל': 'iron_pickaxe',
+        'מכוש': 'iron_pickaxe',
         'מיכוש': 'iron_pickaxe',
         'לפיד': 'torch',
         'תנור': 'furnace',
@@ -985,9 +1011,11 @@ function findRecipeInFullDatabase(query) {
     };
 
     if (!targetId) {
-        for (const [heb, id] of Object.entries(hebrewMap)) {
+        // Sort keys by length in descending order to match "מכוש יהלום" before "מכוש"
+        const sortedKeys = Object.keys(hebrewMap).sort((a, b) => b.length - a.length);
+        for (const heb of sortedKeys) {
             if (q.includes(heb)) {
-                targetId = id;
+                targetId = hebrewMap[heb];
                 break;
             }
         }
