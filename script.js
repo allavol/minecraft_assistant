@@ -1522,3 +1522,30 @@ renderItems();
 
 // Kick off loading of the huge item database in the background
 loadAllItems();
+
+// PWA Installation prompt handler
+let deferredPrompt;
+const pwaInstallBtn = document.getElementById('pwa-install-btn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (pwaInstallBtn) {
+        pwaInstallBtn.style.display = 'inline-flex';
+    }
+});
+
+if (pwaInstallBtn) {
+    pwaInstallBtn.addEventListener('click', async () => {
+        playSound('click');
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to install prompt: ${outcome}`);
+            deferredPrompt = null;
+            pwaInstallBtn.style.display = 'none';
+        } else {
+            alert('כדי להתקין את האפליקציה במכשיר שלך:\n\n📱 אנדרואיד / Chrome: לחץ על 3 הנקודות למעלה בדפדפן ➔ "הוסף למסך הבית" או "התקן אפליקציה".\n\n🍎 אייפון / Safari: לחץ על כפתור השיתוף (מרובע עם חץ למעלה) ➔ "הוסף למסך הבית".');
+        }
+    });
+}
