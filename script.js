@@ -646,7 +646,7 @@ function renderItems() {
                 img.alt = item.en;
                 img.onerror = () => {
                     img.onerror = null;
-                    img.src = 'https://minecraft.wiki/images/Chest.png';
+                    img.src = `https://api.minecraftitems.xyz/api/item/chest`;
                 };
 
                 slot.addEventListener('mouseenter', (e) => showTooltip(e, item));
@@ -1309,8 +1309,8 @@ async function loadAllItems() {
                     he: item.displayName, // No hebrew translation available natively
                     desc: 'פריט חסר תיאור - מתוך מאגר הנתונים המלא של המשחק.',
                     obtain: 'חפש את שם הפריט במדריכים או במשחק עצמו',
-                    // Use a generic block image or try to fetch from wiki formatting
-                    img: `images/${item.name}.png`
+                    // Use the reliable Minecraft API for images
+                    img: `https://api.minecraftitems.xyz/api/item/${item.name}`
                 });
                 existingIds.add(item.name);
             }
@@ -1327,7 +1327,13 @@ async function loadAllItems() {
     }
 }
 
-// Initial Render
+// Update all inventory data to use the reliable image API dynamically
+inventoryData.forEach(item => {
+    item.img = `https://api.minecraftitems.xyz/api/item/${item.id}`;
+});
+
+// Initialize on load
 renderItems();
+
 // Kick off loading of the huge item database in the background
 loadAllItems();
