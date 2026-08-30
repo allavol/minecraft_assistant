@@ -1102,17 +1102,20 @@ if (homeBtn) {
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value;
-        if (searchQuery.length > 0) {
-            clearSearchBtn.classList.remove('hidden');
-        } else {
-            clearSearchBtn.classList.add('hidden');
+        if (clearSearchBtn) {
+            if (searchQuery.length > 0) {
+                clearSearchBtn.classList.remove('hidden');
+            } else {
+                clearSearchBtn.classList.add('hidden');
+            }
         }
         renderItems();
     });
 
     searchInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            handleAiQuery(searchInput.value);
+            // Search is already live on input. Just blur to close mobile keyboard.
+            searchInput.blur();
         }
     });
 }
