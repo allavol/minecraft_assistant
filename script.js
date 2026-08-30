@@ -1310,7 +1310,7 @@ async function loadAllItems() {
                     desc: 'פריט חסר תיאור - מתוך מאגר הנתונים המלא של המשחק.',
                     obtain: 'חפש את שם הפריט במדריכים או במשחק עצמו',
                     // Use a generic block image or try to fetch from wiki formatting
-                    img: `https://minecraft.wiki/images/${item.displayName.replace(/ /g, '_')}_JE1_BE1.png`
+                    img: `images/${item.name}.png`
                 });
                 existingIds.add(item.name);
             }
