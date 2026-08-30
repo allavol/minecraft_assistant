@@ -2,15 +2,29 @@ const sfxPop = new Audio('https://assets.mixkit.co/active_storage/sfx/1114/1114-
 sfxPop.volume = 0.5;
 const sfxClick = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
 sfxClick.volume = 0.3;
+const sfxMetal = new Audio('https://assets.mixkit.co/active_storage/sfx/2796/2796-preview.mp3'); // Sword/Tool
+sfxMetal.volume = 0.5;
+const sfxWood = new Audio('https://assets.mixkit.co/active_storage/sfx/2686/2686-preview.mp3'); // Block place
+sfxWood.volume = 0.5;
+const sfxEat = new Audio('https://assets.mixkit.co/active_storage/sfx/892/892-preview.mp3'); // Crunch
+sfxEat.volume = 0.5;
+const sfxMagic = new Audio('https://assets.mixkit.co/active_storage/sfx/1004/1004-preview.mp3'); // Chime/Magic
+sfxMagic.volume = 0.5;
 
-function playSound(type) {
+function playSound(type, cat = '') {
     try {
-        if (type === 'pop') {
-            sfxPop.currentTime = 0;
-            sfxPop.play().catch(e => {});
-        } else if (type === 'click') {
+        if (type === 'click') {
             sfxClick.currentTime = 0;
             sfxClick.play().catch(e => {});
+        } else if (type === 'pop') {
+            let soundToPlay = sfxPop;
+            if (cat === 'weapons' || cat === 'tools') soundToPlay = sfxMetal;
+            else if (cat === 'building' || cat === 'nature') soundToPlay = sfxWood;
+            else if (cat === 'food') soundToPlay = sfxEat;
+            else if (cat === 'books') soundToPlay = sfxMagic;
+            
+            soundToPlay.currentTime = 0;
+            soundToPlay.play().catch(e => {});
         }
     } catch(e) {}
 }
@@ -638,7 +652,7 @@ function renderItems() {
                 slot.addEventListener('mouseenter', (e) => showTooltip(e, item));
                 slot.addEventListener('mousemove', (e) => moveTooltip(e));
                 slot.addEventListener('mouseleave', hideTooltip);
-                slot.addEventListener('click', () => playSound('pop'));
+                slot.addEventListener('click', () => playSound('pop', item.cat));
 
                 slot.appendChild(img);
                 slotsContainer.appendChild(slot);
