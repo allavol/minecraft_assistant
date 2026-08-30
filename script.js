@@ -32,6 +32,7 @@ function playSound(type, cat = '') {
 const rarityMap = new Map(); // Maps item string ID to numeric rarity ID
 
 let inventoryData = [
+    { id: 'stick', cat: 'tools', en: 'Stick', he: 'מקל', desc: 'מקל עץ בסיסי! משמש ליצירת כלי עבודה, נשקים, לפידים, גדרות ועוד המון פריטים! 🪵', img: 'images/stick.png', obtain: 'יוצרים מ-2 קרשי עץ בשולחן העבודה' },
     // === 20 פריטים חדשים שנוספו ===
     { id: 'sandstone', cat: 'building', en: 'Sandstone', he: 'אבן חול', desc: 'אבן צהובה יפהפייה שנוצרת כשחול נדחס יחד! מושלמת לבניית פירמידות! 🏜️', img: 'images/sandstone.png', obtain: 'יוצרים מ-4 בלוקי חול בשולחן העבודה' },
     { id: 'white_wool', cat: 'building', en: 'White Wool', he: 'צמר לבן', desc: 'צמר רך ונעים של כבשים! אפשר לצבוע אותו בכל צבע שרוצים! 🐑', img: 'images/white_wool.png', obtain: 'גוזמים כבשים עם מספריים' },
@@ -371,6 +372,28 @@ const categoryOrder = ['building', 'nature', 'tools', 'weapons', 'food', 'books'
 
 // Built-in Kids Crafting Recipes Knowledge Base with 3x3 Grid & Sub-crafting
 const craftingRecipes = [
+    {
+        keywords: ['מקל', 'מקלות', 'stick', 'sticks'],
+        title: '🥢 איך מכינים מקל (Stick)?',
+        summary: 'כדי להכין <strong>4 מקלות (Sticks)</strong>, צריך <strong>2 קרשי עץ (Oak Planks)</strong>!',
+        ingredients: [
+            { name: 'קרשי עץ (Oak Planks) x2', img: 'images/oak_planks.png' }
+        ],
+        grid: [
+            [null, 'images/oak_planks.png', null],
+            [null, 'images/oak_planks.png', null],
+            [null, null, null]
+        ],
+        resultImg: 'images/stick.png',
+        resultName: 'מקל (Stick) x4',
+        subcraft: [
+            '<strong>🪵 קרשי עץ (Oak Planks):</strong> מניחים בול עץ (Oak Log) יחיד בשולחן העבודה לקבלת 4 קרשי עץ.'
+        ],
+        instructions: [
+            'מניחים <strong>קרש עץ אחד</strong> במשבצת האמצעית של השורה העליונה.',
+            'מניחים <strong>קרש עץ נוסף</strong> במשבצת האמצעית של השורה המרכזית (ממש מתחתיו).'
+        ]
+    },
     {
         keywords: ['תפוח זהב', 'תפוח מוזהב', 'גולדן אפל', 'גולדן', 'golden apple', 'golden_apple'],
         title: '🍏 איך מכינים תפוח זהב (Golden Apple)?',
