@@ -94,6 +94,18 @@ body {
     background-color: #4b85ad;
 }
 
+.btn-search {
+    background-color: #5b8731;
+    color: #fff;
+    white-space: nowrap;
+    border-color: #79ab44 #3a5c1a #3a5c1a #79ab44;
+    font-weight: bold;
+}
+
+.btn-search:hover {
+    background-color: #6da33a;
+}
+
 .btn-ai {
     background-color: #5b8731;
     color: #fff;
@@ -610,5 +622,18 @@ body {
     .crafting-arrow {
         transform: rotate(90deg); /* Point down instead of right */
         margin: 5px 0;
+    }
+    
+    /* Fixed Tooltip on Mobile */
+    .mc-tooltip {
+        position: fixed !important;
+        bottom: 20px !important;
+        left: 50% !important;
+        top: auto !important;
+        transform: translateX(-50%) !important;
+        width: 90% !important;
+        max-width: none !important;
+        z-index: 9999 !important;
+        box-shadow: 0px -5px 15px rgba(0,0,0,0.8) !important;
     }
 }

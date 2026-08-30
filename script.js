@@ -1099,6 +1099,8 @@ if (homeBtn) {
     homeBtn.addEventListener('click', resetToHome);
 }
 
+const searchBtn = document.getElementById('search-btn');
+
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value;
@@ -1116,6 +1118,14 @@ if (searchInput) {
         if (e.key === 'Enter') {
             // Search is already live on input. Just blur to close mobile keyboard.
             searchInput.blur();
+        }
+    });
+}
+
+if (searchBtn) {
+    searchBtn.addEventListener('click', () => {
+        if (searchInput) {
+            searchInput.blur(); // Dismisses mobile keyboard to show the results
         }
     });
 }
